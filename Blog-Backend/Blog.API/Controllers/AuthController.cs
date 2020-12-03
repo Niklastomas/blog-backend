@@ -46,7 +46,7 @@ namespace Blog.API.Controllers
                 return BadRequest(new { password = "invalid password" });
             }
 
-            return _authService.GetAuthData(user.Id);
+            return _authService.GetAuthData(user.Id, user.Email, user.Username);
         }
 
         [HttpPost("register")]
@@ -80,7 +80,7 @@ namespace Blog.API.Controllers
 
             _userRepository.AddUser(newUser);
 
-            return _authService.GetAuthData(id);
+            return _authService.GetAuthData(id, newUser.Email, newUser.Username);
         }
     }
 }

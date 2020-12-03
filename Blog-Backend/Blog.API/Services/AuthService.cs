@@ -22,7 +22,7 @@ namespace Blog.API.Services
             _jwtLifeSpan = jwtLifeSpan;
         }
 
-        public AuthData GetAuthData(string id)
+        public AuthData GetAuthData(string id, string email, string username)
         {
             var expirationTime = DateTime.UtcNow.AddSeconds(_jwtLifeSpan);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -44,7 +44,9 @@ namespace Blog.API.Services
             {
                 Token = token,
                 TokenExpirationTime = ((DateTimeOffset)expirationTime).ToUnixTimeSeconds(),
-                Id = id
+                Id = id,
+                Email = email,
+                Username = username
             };
         }
 
