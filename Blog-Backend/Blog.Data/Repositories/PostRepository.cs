@@ -1,4 +1,5 @@
-﻿using Blog.Model.Entities;
+﻿using Blog.Data.DTO;
+using Blog.Model.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,9 +22,25 @@ namespace Blog.Data.Repositories
             return _context.Posts.ToList();
         }
 
-        public Post GetPost(string id)
+        public PostDTO GetPost(string id)
         {
-            return _context.Posts.Where(x => x.Id == id).FirstOrDefault();
+            return _context.Posts.
+                Where(x => x.Id == id)
+                .Include(x => x.User)
+                .Select(x => new PostDTO
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Content = x.Content,
+                    Published = x.Published,
+                    User = new UserDTO()
+                    {
+                        Id = x.User.Id,
+                        Username = x.User.Username,
+                        Email = x.User.Email
+                    }
+                })
+                .FirstOrDefault();
         }
 
         public void CreatePost(Post post)

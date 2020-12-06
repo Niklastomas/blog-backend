@@ -1,4 +1,5 @@
-﻿using Blog.Model.Entities;
+﻿using Blog.Data.DTO;
+using Blog.Model.Entities;
 using System.Collections.Generic;
 
 namespace Blog.Data.Repositories
@@ -9,7 +10,7 @@ namespace Blog.Data.Repositories
 
         void DeletePost(string id);
 
-        Post GetPost(string id);
+        PostDTO GetPost(string id);
 
         List<Post> GetPosts();
     }

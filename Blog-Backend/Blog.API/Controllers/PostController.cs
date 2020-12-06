@@ -36,9 +36,14 @@ namespace Blog.API.Controllers
 
         // GET api/<PostController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public ActionResult Get(string id)
         {
-            return "value";
+            var post = _postRepository.GetPost(id);
+            if (post == null)
+            {
+                return BadRequest(new { message = "No post found" });
+            }
+            return Ok(post);
         }
 
         // POST api/<PostController>
@@ -52,6 +57,7 @@ namespace Blog.API.Controllers
                 Title = postVM.Title,
                 Content = postVM.Content,
                 Published = DateTime.Now,
+                Image = postVM.Image,
                 UserId = postVM.UserId
             };
 
