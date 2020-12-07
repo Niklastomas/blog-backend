@@ -33,6 +33,7 @@ namespace Blog.Data.Repositories
                     Title = x.Title,
                     Content = x.Content,
                     Published = x.Published,
+                    Image = x.Image,
                     User = new UserDTO()
                     {
                         Id = x.User.Id,
