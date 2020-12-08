@@ -1,6 +1,7 @@
 ﻿using Blog.API.ViewModels;
 using Blog.Data.Repositories;
 using Blog.Model.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -46,9 +47,21 @@ namespace Blog.API.Controllers
             return Ok(post);
         }
 
+        // GET api/<PostController>/5
+        [HttpGet("[action]/{userId}")]
+        public ActionResult<List<Post>> GetUserPosts(string userId)
+        {
+            var posts = _postRepository.GetUserPosts(userId);
+            if (posts == null)
+            {
+                return BadRequest(new { message = "No post found" });
+            }
+            return Ok(posts);
+        }
+
         // POST api/<PostController>
         [HttpPost]
-        public void Post([FromBody] PostViewModel postVM)
+        public ActionResult<Post> Post([FromBody] PostViewModel postVM)
         {
             var id = Guid.NewGuid().ToString();
             var post = new Post()
@@ -61,7 +74,12 @@ namespace Blog.API.Controllers
                 UserId = postVM.UserId
             };
 
-            _postRepository.CreatePost(post);
+            var postCreated = _postRepository.CreatePost(post);
+            if (postCreated == true)
+            {
+                return Ok(post);
+            }
+            return BadRequest(new { message = "Failed to save post" });
         }
 
         // PUT api/<PostController>/5
@@ -72,8 +90,14 @@ namespace Blog.API.Controllers
 
         // DELETE api/<PostController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult<string> Delete(string id)
         {
+            var postDeleted = _postRepository.DeletePost(id);
+            if (postDeleted == true)
+            {
+                return Ok(id);
+            }
+            return BadRequest(new { message = "Failed to delete post" });
         }
     }
 }

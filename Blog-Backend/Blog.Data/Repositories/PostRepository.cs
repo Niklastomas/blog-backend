@@ -19,7 +19,7 @@ namespace Blog.Data.Repositories
 
         public List<Post> GetPosts()
         {
-            return _context.Posts.ToList();
+            return _context.Posts.OrderByDescending(x => x.Published).ToList();
         }
 
         public PostDTO GetPost(string id)
@@ -44,17 +44,32 @@ namespace Blog.Data.Repositories
                 .FirstOrDefault();
         }
 
-        public void CreatePost(Post post)
+        public bool CreatePost(Post post)
         {
-            _context.Posts.Add(post);
-            _context.SaveChanges();
+            if (post != null)
+            {
+                _context.Posts.Add(post);
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
         }
 
-        public void DeletePost(string id)
+        public bool DeletePost(string id)
         {
             var post = _context.Posts.Where(x => x.Id == id).FirstOrDefault();
-            _context.Posts.Remove(post);
-            _context.SaveChanges();
+            if (post != null)
+            {
+                _context.Posts.Remove(post);
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public List<Post> GetUserPosts(string userId)
+        {
+            return _context.Posts.Where(x => x.UserId == userId).ToList();
         }
     }
 }

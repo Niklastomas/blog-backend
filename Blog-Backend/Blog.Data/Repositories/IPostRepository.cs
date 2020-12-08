@@ -6,12 +6,14 @@ namespace Blog.Data.Repositories
 {
     public interface IPostRepository
     {
-        void CreatePost(Post post);
+        bool CreatePost(Post post);
 
-        void DeletePost(string id);
+        bool DeletePost(string id);
 
         PostDTO GetPost(string id);
 
         List<Post> GetPosts();
+
+        List<Post> GetUserPosts(string userId);
     }
 }
