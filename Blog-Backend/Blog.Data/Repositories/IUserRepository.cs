@@ -9,6 +9,8 @@ namespace Blog.Data.Repositories
 
         void DeleteUser(string id);
 
+        void UpdateUser(User user);
+
         User GetUser(string email);
 
         IEnumerable<User> GetUsers();

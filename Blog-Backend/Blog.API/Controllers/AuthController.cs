@@ -82,5 +82,22 @@ namespace Blog.API.Controllers
 
             return _authService.GetAuthData(id, newUser.Email, newUser.Username);
         }
+
+        [HttpPut("updatePassword")]
+        public ActionResult<bool> Put([FromBody] UpdatePasswordViewModel model)
+        {
+            try
+            {
+                var user = _userRepository.GetUser(model.Email);
+                user.Password = _authService.HashPassword(model.Password);
+                _userRepository.UpdateUser(user);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
     }
 }

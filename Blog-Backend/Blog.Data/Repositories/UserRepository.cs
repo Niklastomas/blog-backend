@@ -58,5 +58,11 @@ namespace Blog.Data.Repositories
             }
             return false;
         }
+
+        public void UpdateUser(User user)
+        {
+            _context.Users.Update(user);
+            _context.SaveChanges();
+        }
     }
 }
